@@ -1,0 +1,79 @@
+
+{% extends 'main.html' %}
+{% block content %}
+<section class="home" id="home">
+
+    <div class="content">
+        <h3>Connecting Every one <span>Every Where</span> </h3>
+        
+    </div>
+
+</section>
+
+
+<!-- home section ends -->
+
+
+
+<!-- features section starts  -->
+
+<section class="features" id="features">
+
+    <!-- Starts Here-->
+
+    <div class="container">
+
+        <div class="row height d-flex justify-content-center align-items-center">
+
+          <div class="col-md-6">
+
+            <div class="form">
+              <i class="fa fa-bar"></i>
+              <input type="text" class="form-control form-input" placeholder="Search for item...">
+<span style="padding-right: 90px;  ">
+
+<a href="#" class="logo"> <i class = "fas fa-search" style="width: 55px;"></i></a>
+</span>
+            </div>
+          </div>
+        </div>
+        
+
+        </div>
+
+   <!--ENds Here -->
+   
+
+</section>
+
+
+
+
+<section class="categories" id="categories">
+
+
+
+
+    <div class="box-container">
+        {% for product in products %}
+        <div class="box">
+            <h3>{{product.product_name}}</h3>
+            <img src="{{product.product_image.url}}" alt="">
+            <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star-half-alt"></i>
+    </div>
+        <p>{{product.price}} birr</p>
+            <a href="#" class="btn">add to cart</a>
+        </div>
+{% endfor %}
+
+       
+
+    </div>
+
+</section>
+{% endblock content %}
