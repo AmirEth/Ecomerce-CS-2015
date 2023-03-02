@@ -14,5 +14,33 @@ def home(request):
 
 
 def signin(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        pass1 = request.POST['pass1']
+
+        user = authenticate(username=username, password=pass1)
+
+        if user is not None:
+            login(request, user)
+            fname = user.first_name
+            # messages.success(request, "Logged In Sucessfully!!")
+            return render(request, "index.html", {"fname": fname})
+        else:
+            messages.error(request, "Bad Credentials!!")
+            return redirect('home')
 
     return render(request, "signin.html")
+
+
+def signout(request):
+    logout(request)
+    messages.success(request, "Logged Out Successfully!!")
+    return redirect('home')
+
+
+def signup(request):
+    return render(request, "signup.html")
+
+
+def autenication_main(request):
+    return render(request, "autenication_main.html")
