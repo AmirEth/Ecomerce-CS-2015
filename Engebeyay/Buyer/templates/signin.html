@@ -2,6 +2,7 @@
 
 
 {% block content%}
+{% if request.GET.next != '/seller' %}
 <div class="container-fluid mt-5">
     <div class="row justify-content-center">
         <div class="col-lg-4">
@@ -9,11 +10,10 @@
                 <div class="card-body">
 
 
-                    {% if request.GET.next != '/seller' %}
+
                     <h4 class="text-center text-uppercase mb-3">
                         <b>
-                            Customer
-
+                            Buyer Login
                         </b>
                     </h4>
                     <form method="post" action="/signin" class="mb-2">
@@ -32,13 +32,24 @@
                         <button type="submit" class="btn btn-warning btn-block">Login</button>
                     </form>
 
-                    <p class="text-center mt-3">new to Engbeyay? <a href="/signup/?next={{ request.GET.next }}">Sign
+                    <p class="text-center mt-3">new to Engbeyay? <a href="/signup?next={{ request.GET.next }}">Sign
                             up</a></p>
                     </h4>
-                    {% else %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+
                     <h4 class="text-center text-uppercase mb-3">
                         <b>
-                            Seller
+                            Seller Login
                         </b>
                     </h4>
                     <form method="post" action="/signin" class="mb-2">
@@ -61,11 +72,10 @@
                             up</a></p>
                     </h4>
 
-                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+{% endif %}
 {% endblock %}

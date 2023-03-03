@@ -17,13 +17,45 @@
         <div class="container-fluid">
             {% if user.is_authenticated %}
 
-            <a class="navbar-brand" href="/">Engebeyay</a>
+            <a class="navbar-brand" href="/" style="color: orange;">Engebeyay</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <h3>Hello {{fname}}!</h3>
-            <button type="submit"><a href="/signout">SignOut</a></button>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Profile
+                    </button>
+                    <button type="button" class="btn btn-warning">
+                        Cart
+                    </button>
+
+
+                </li>
+            </ul>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Hi {{fname}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success">Save changes</button>
+                            <button type="button" class="btn btn-danger" type="submit"><a href="/signout"
+                                    style="text-decoration: none; color: white;">SignOut</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             {% else %}
             <a class="navbar-brand" href="/">Engebeyay</a>
@@ -31,7 +63,7 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a href="/autenication_main" class="btn btn-outline-dark">Login/Register</a>
+            <a href="/signin" class="btn btn-outline-dark">Login/Register</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                 </ul>

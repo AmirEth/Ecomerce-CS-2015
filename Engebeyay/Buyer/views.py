@@ -40,7 +40,3 @@ def signout(request):
 
 def signup(request):
     return render(request, "signup.html")
-
-
-def autenication_main(request):
-    return render(request, "autenication_main.html")
