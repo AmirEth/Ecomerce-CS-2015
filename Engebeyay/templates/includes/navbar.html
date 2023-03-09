@@ -1,0 +1,55 @@
+{% load static %}
+
+<header class="section-header">
+  <section class="header-main border-bottom">
+
+    <div class="container">
+      <nav class="navbar  ">
+
+
+        <!-- Left Side -->
+        <ul class="nav">
+          <a href=" {% url 'home' %}" class="brand-wrap">
+            <img class="logo" src="{% static './images/main-logo.png' %}">
+
+          </a>
+        </ul>
+
+        <!--Right side-->
+        <ul class="nav justify-content-end ">
+          {% if user.id is None %}
+          <div class="widget-header">
+            <small class="title text-muted">Welcome guest!</small>
+            <div>
+              <a href="{% url 'login' %}">Sign in</a> <span class="dark-transp"> | </span>
+              <a href="{% url 'register' %}"> Register</a>
+            </div>
+          </div>
+          {% else %}
+          <div class="widget-header">
+            <small class="title text-muted">Welcome {{user.first_name}}!</small>
+            <!--  <div>
+              <a href="{% url 'dashboard' %}">Profile</a> <span class="dark-transp"> | </span>
+              <a href="{% url 'logout' %}"> Logout</a>
+            </div>-->
+          </div>
+          <a href="{% url 'dashboard' %}" class="widget-header pl-3 ">
+            <div class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></div>
+          </a>
+          <a href="{% url 'cart' %}" class="widget-header pl-3 ">
+            <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
+            <span class="badge badge-pill badge-danger notify">{{cart_count}}</span>
+          </a>
+          {% endif %}
+        </ul> <!-- widgets-wrap.// -->
+
+
+      </nav> <!-- row.// -->
+    </div> <!-- container.// -->
+
+  </section> <!-- header-main .// -->
+
+
+
+
+</header> <!-- section-header.// -->

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- ========================= SECTION PAGETOP ========================= -->
+
+<nav class="navbar navbar-muted bg-muted">
+	<div class="col-md col-6 ">
+		<div class="category-wrap dropdown d-inline-block float-right">
+			<button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+				<i class="fa fa-bars"></i> All category
+			</button>
+			<div class="dropdown-menu">
+				<a class="dropdown-item" href="{% url 'store' %}">All Products </a>
+				{% for category in links %}
+				<a class="dropdown-item" href="{{ category.get_url }}">{{ category.category_name }} </a>
+				{% endfor %}
+			</div>
+		</div> <!-- category-wrap.// -->
+	</div> <!-- col.// -->
+	<div class="col-md-4 col-sm-12 col">
+		<form action="{% url 'search' %}" class="search" method='GET'>
+			<div class="input-group w-100">
+				<input type="text" class="form-control" required style="width:60%;" placeholder="Search" name="keyword">
+				<div class="input-group-append">
+					<button class="btn btn-warning" type="submit">
+						<i class="fa fa-search"></i>
+					</button>
+				</div>
+			</div>
+		</form> <!-- search-wrap .end// -->
+	</div> <!-- col.// -->
+
+</nav>
+
+
+
+
+
+<!--Search ends here-->
+<div class="container">
+	{% if 'search' in request.path %}
+	<h2 class="title-page">Search Result</h2>
+	{% else %}
+	<h2 class="title-page">Our Store</h2>
+	{% endif %}
+
+</div> <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+	<div class="container">
+
+		<div class="row">
+
+			<main class="col-md-9">
+
+				<header class="border-bottom mb-4 pb-3">
+					<div class="form-inline">
+						<span class="mr-md-auto"><b>{{ product_count }}</b> items found </span>
+
+					</div>
+				</header><!-- sect-heading -->
+
+				<div class="row">
+					{% if products %}
+					{% for product in products %}
+					<div class="col-md-4">
+						<figure class="card card-product-grid">
+							<div class="img-wrap">
+
+								<a href="{{ product.get_url }}"><img src="{{ product.images.url }}"></a>
+
+							</div> <!-- img-wrap.// -->
+							<figcaption class="info-wrap">
+								<div class="fix-height">
+									<a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
+									<div class="price-wrap mt-2">
+										<span class="price">$ {{ product.price }}</span>
+									</div> <!-- price-wrap.// -->
+								</div>
+								<a href="{{ product.get_url }}" class="btn btn-block btn-warning">View Details </a>
+							</figcaption>
+						</figure>
+					</div> <!-- col.// -->
+					{% endfor %}
+					{% else %}
+					<div>
+						<h2>No result found. Please try again.</h2>
+					</div>
+					{% endif %}
+				</div> <!-- row end.// -->
+
+
+				<nav class="mt-4" aria-label="Page navigation sample">
+					{% if products.has_other_pages %}
+					<ul class="pagination">
+						{% if products.has_previous %}
+						<li class="page-item"><a class="page-link"
+								href="?page={{products.previous_page_number}}">Previous</a></li>
+						{% else %}
+						<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+						{% endif %}
+
+						{% for i in products.paginator.page_range %}
+						{% if products.number == i %}
+						<li class="page-item active"><a class="page-link" href="#">{{i}}</a></li>
+						{% else %}
+						<li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+						{% endif %}
+						{% endfor %}
+
+						{% if products.has_next %}
+						<li class="page-item"><a class="page-link" href="?page={{products.next_page_number}}">Next</a>
+						</li>
+						{% else %}
+						<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+						{% endif %}
+					</ul>
+					{% endif %}
+				</nav>
+
+			</main> <!-- col.// -->
+
+		</div>
+
+	</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock %}

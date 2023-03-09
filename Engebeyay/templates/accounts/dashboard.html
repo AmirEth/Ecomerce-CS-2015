@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-conten padding-y bg">
+
+	{% include 'includes/alerts.html' %}
+	<div class="container">
+		<div class="row">
+			<aside class="col-md-3">
+				<!--   SIDEBAR   -->
+				<ul class="list-group">
+					<a class="list-group-item active" href="#"> My Orders </a>
+					<a class="list-group-item" href="#"> Profile </a>
+					<a class="list-group-item" href="#"> Completed Orders </a>
+				</ul>
+				<br>
+				<a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i> <span
+						class="text">Log out</span> </a>
+				<!--   SIDEBAR .//END   -->
+			</aside>
+
+			<main class="col-md-9">
+				<article class="card">
+					<header class="card-header">
+						<strong class="d-inline-block mr-3">Order ID: 123456</strong>
+						<span>Order Date: 01-Feb-2023</span>
+					</header>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-8">
+								<h6 class="text-muted">Delivery to</h6>
+								<p>Buyer Name <br>
+									Phone +251--------- Email: myname@gmail.com <br>
+									Location: House-No , Town, Kebele <br>
+									City
+								</p>
+							</div>
+							<div class="col-md-4">
+								<h6 class="text-muted">Payment</h6>
+								<span class="text-info">
+									<i class="fa-solid fa-money-check-dollar"></i>
+									YenePay **** 4216
+								</span>
+								<br>
+								Delivery fee: 30birr per 1KM <br>
+								<span class="b">@Engebeyay</span>
+								</p>
+							</div>
+						</div> <!-- row.// -->
+					</div> <!-- card-body .// -->
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<tr>
+								<td width="65">
+									<img src="../images/items/1.jpg" class="img-xs border">
+								</td>
+								<td>
+									<p class="title mb-0">Product name </p>
+									<var class="price text-muted">Some Detail</var>
+								</td>
+								<td>
+
+									<var class="price text-muted">Price</var>
+								</td>
+								<td> Seller
+								</td>
+								<td width="250">
+									<!-- Button trigger modal -->
+									<button type="button" class="btn btn-info" data-toggle="modal"
+										data-target="#exampleModal">
+										Scan QR
+									</button>
+
+									<!-- Modal -->
+									<div class="modal fade" id="exampleModal" tabindex="-1"
+										aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">Item Name</h5>
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<img src="{% static 'images/QR.png' %}" class="img-fluid rounded">
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary"
+														data-dismiss="modal">Close</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+
+						</table>
+					</div> <!-- table-responsive .end// -->
+				</article> <!-- order-group.// -->
+			</main>
+		</div> <!-- row.// -->
+	</div>
+
+
+</section>
+
+{% endblock %}
