@@ -97,7 +97,7 @@ def login(request):
         user = auth.authenticate(email=email, password=password)
         if user.is_seller:
              if user is not None:
-                  return render(request ,'accounts/seller.html')
+                  return render(request ,'seller/seller.html')
 
 
 
