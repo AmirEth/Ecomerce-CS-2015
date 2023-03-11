@@ -3,6 +3,7 @@ from .models import Product, ReviewRating
 from category.models import Category
 from carts.models import CartItem
 from django.db.models import Q
+from accounts.models import Account
 
 from carts.views import _cart_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -107,8 +108,11 @@ def add_product(request):
     if request.method=='POST':
         form=ProductAddForm(request.POST,request.FILES)
         if form.is_valid():
+            
+            form=form.save(commit=False)
+            form.owner=request.user
             form.save()
-            print(form)
+        
             return render(request ,'seller/seller.html')
 
     context={'form':form}
