@@ -3,11 +3,12 @@ from .models import Product, ReviewRating
 from category.models import Category
 from carts.models import CartItem
 from django.db.models import Q
+from accounts.models import Account
 
 from carts.views import _cart_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
-from .forms import ReviewForm
+from .forms import ReviewForm,ProductAddForm
 from django.contrib import messages
 from orders.models import OrderProduct
 
@@ -99,3 +100,21 @@ def submit_review(request, product_id):
                 data.save()
                 messages.success(request, 'Thank you! Your review has been submitted.')
                 return redirect(url)
+            
+
+
+def add_product(request):
+    form=ProductAddForm
+    if request.method=='POST':
+        form=ProductAddForm(request.POST,request.FILES)
+        if form.is_valid():
+            
+            form=form.save(commit=False)
+            form.owner=request.user
+            form.save()
+        
+            return render(request ,'seller/seller.html')
+
+    context={'form':form}
+    return render(request,'seller/add_new_product.html', context)
+

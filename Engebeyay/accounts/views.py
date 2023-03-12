@@ -4,6 +4,7 @@ from .models import Account
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.contrib.auth import login,logout
 
 # Verification email
 from django.contrib.sites.shortcuts import get_current_site
@@ -16,6 +17,7 @@ from django.core.mail import EmailMessage
 from carts.views import _cart_id
 from carts.models import Cart, CartItem
 import requests
+
 
 
 def buyer_register(request):
@@ -89,7 +91,7 @@ def seller_register(request):
     return render(request, 'accounts/seller_register.html', context)
 
 
-def login(request):
+def login_user(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -97,7 +99,8 @@ def login(request):
         user = auth.authenticate(email=email, password=password)
         if user.is_seller:
              if user is not None:
-                  return render(request ,'accounts/seller.html')
+                  login(request,user)
+                  return render(request ,'seller/seller.html')
 
 
 
