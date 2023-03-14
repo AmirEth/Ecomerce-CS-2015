@@ -24,6 +24,7 @@ class MyAccountManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
+
     def create_seller(self, first_name, last_name, username, email, password=None):
         if not email:
             raise ValueError('User must have an email address')
@@ -49,7 +50,7 @@ class MyAccountManager(BaseUserManager):
             password=password,
             first_name=first_name,
             last_name=last_name,
-        ) 
+        )
         user.is_admin = True
         user.is_active = True
         user.is_staff = True
@@ -74,8 +75,6 @@ class Account(AbstractBaseUser):
     is_buyer = models.BooleanField(default=False)
     is_seller = models.BooleanField(default=False)
 
-
-
     is_superadmin = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
@@ -90,8 +89,8 @@ class Account(AbstractBaseUser):
         return self.email
 
     def has_perm(self, perm, obj=None):
-        return self.is_admin  
-    # it gives admin all the permissions  
+        return self.is_admin
+    # it gives admin all the permissions
 
     def has_module_perms(self, add_label):
         return True

@@ -1,8 +1,0 @@
-<h1>{{request.user}}</h1>
-
-
-<form enctype="multipart/form-data" method="POST">
-    {%csrf_token%}
-    {{form.as_p}}
-        <input type="submit" value="Add" id="">
-    </form>

@@ -4,7 +4,8 @@ from .models import Account
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.contrib.auth import login,logout
+from django.contrib.auth import login, logout
+from store.forms import ProductAddForm
 
 # Verification email
 from django.contrib.sites.shortcuts import get_current_site
@@ -19,7 +20,6 @@ from carts.models import Cart, CartItem
 import requests
 
 
-
 def buyer_register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -27,10 +27,11 @@ def buyer_register(request):
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             phone_number = form.cleaned_data['phone_number']
-            email = form.cleaned_data['email'] 
+            email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             username = email.split("@")[0]
-            user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
+            user = Account.objects.create_user(
+                first_name=first_name, last_name=last_name, email=email, username=username, password=password)
             user.phone_number = phone_number
             user.save()
 
@@ -55,6 +56,7 @@ def buyer_register(request):
     }
     return render(request, 'accounts/register.html', context)
 
+
 def seller_register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -62,10 +64,11 @@ def seller_register(request):
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             phone_number = form.cleaned_data['phone_number']
-            email = form.cleaned_data['email'] 
+            email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             username = email.split("@")[0]
-            user = Account.objects.create_seller(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
+            user = Account.objects.create_seller(
+                first_name=first_name, last_name=last_name, email=email, username=username, password=password)
             user.phone_number = phone_number
             user.save()
 
@@ -92,23 +95,34 @@ def seller_register(request):
 
 
 def login_user(request):
+    form = ProductAddForm
+    if request.method == 'POST':
+        form = ProductAddForm(request.POST, request.FILES)
+        if form.is_valid():
+
+            form = form.save(commit=False)
+            form.owner = request.user
+            form.save()
+
+            return render(request, 'seller/seller.html')
+
+    context = {'form': form}
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
 
         user = auth.authenticate(email=email, password=password)
         if user.is_seller:
-             if user is not None:
-                  login(request,user)
-                  return render(request ,'seller/seller.html')
+            if user is not None:
+                login(request, user)
+                return render(request, 'seller/seller.html', context)
 
-
-
-        elif  user.is_seller==False:
+        elif user.is_seller == False:
             if user is not None:
                 try:
                     cart = Cart.objects.get(cart_id=_cart_id(request))
-                    is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+                    is_cart_item_exists = CartItem.objects.filter(
+                        cart=cart).exists()
                     if is_cart_item_exists:
                         cart_item = CartItem.objects.filter(cart=cart)
 
@@ -154,11 +168,9 @@ def login_user(request):
                     params = dict(x.split('=') for x in query.split('&'))
                     if 'next' in params:
                         nextPage = params['next']
-                        return redirect(nextPage)                
+                        return redirect(nextPage)
                 except:
                     return redirect('dashboard')
-
-                 
 
         else:
             messages.error(request, 'Invalid login credentials')
@@ -166,7 +178,7 @@ def login_user(request):
     return render(request, 'accounts/login.html')
 
 
-@login_required(login_url = 'login')
+@login_required(login_url='login')
 def logout(request):
     auth.logout(request)
     messages.success(request, 'You are logged out.')
@@ -177,20 +189,21 @@ def activate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = Account._default_manager.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
+    except (TypeError, ValueError, OverflowError, Account.DoesNotExist):
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        messages.success(request, 'Congratulations! Your account is activated.')
+        messages.success(
+            request, 'Congratulations! Your account is activated.')
         return redirect('login')
     else:
         messages.error(request, 'Invalid activation link')
         return redirect('register')
 
 
-@login_required(login_url = 'login')
+@login_required(login_url='login')
 def dashboard(request):
     return render(request, 'accounts/dashboard.html')
 
@@ -214,7 +227,8 @@ def forgotPassword(request):
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
 
-            messages.success(request, 'Password reset email has been sent to your email address.')
+            messages.success(
+                request, 'Password reset email has been sent to your email address.')
             return redirect('login')
         else:
             messages.error(request, 'Account does not exist!')
@@ -226,7 +240,7 @@ def resetpassword_validate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = Account._default_manager.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
+    except (TypeError, ValueError, OverflowError, Account.DoesNotExist):
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
@@ -255,3 +269,8 @@ def resetPassword(request):
             return redirect('resetPassword')
     else:
         return render(request, 'accounts/resetPassword.html')
+
+
+def seller_page(request):
+
+    return render(request, 'seller/seller.html')

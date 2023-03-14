@@ -1,2 +1,108 @@
-<h1>Welcome to the seller page</h1>
-<a href="{% url 'new_product' %}">Add</a>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-conten padding-y bg">
+
+    {% include 'includes/alerts.html' %}
+    <div class="container">
+        <div class="row">
+
+            <aside class="col-md-3">
+                <!--   SIDEBAR   -->
+                <div class="mb-3">
+                    <img src="{% static 'images/QR.png' %}" alt="profile-pic" class="img-lg border"
+                        style="border-radius: 50%;"> <br>
+                </div>
+                <ul class="list-group">
+                    <a class="list-group-item" onclick="fordashbord()" href="#">Dashbord</a>
+                    <a class="list-group-item" onclick="forprofile()" href="#"> Profile</a>
+                    <a class="list-group-item" onclick="foritem()" href="#">Items </a>
+                    <a class="list-group-item" onclick="fordiv1()" href="#">Orders </a>
+                </ul>
+                <br>
+                <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i> <span
+                        class="text">Log out</span> </a>
+                <!--   SIDEBAR .//END   -->
+            </aside>
+
+            <div class="col-md-9">
+                <div class="card" id="dashbord">
+                    <header class="card-header">
+                        <strong class="d-inline-block mr-3">Dashbord</strong>
+                    </header>
+                    <div class="card-body">
+                        <div class="row">
+                            <span>
+                                <p>{{request.user}}</p>
+                            </span>
+                        </div> <!-- row.// -->
+                    </div> <!-- card-body .// -->
+                    <div class="card-body">
+                        <p>--------------------Dashbord Portion---------------------------</p>
+                    </div>
+                </div>
+
+                <div class="card" style="display: none;" id="profile">
+                    <header class="card-header">
+                        <strong class="d-inline-block mr-3">Your Profile Info</strong>
+                    </header>
+                    <div class="card-body">
+                        <div class="row">
+                            <span>
+                                <p>{{request.user}}</p>
+                            </span>
+                        </div> <!-- row.// -->
+                    </div> <!-- card-body .// -->
+                    <div class="card-body">
+                        <p>Form To view and update The user detail</p>
+                    </div>
+                </div>
+
+                <div class="card" style="display: none;" id="item">
+                    <header class="card-header">
+                        <strong class="d-inline-block mr-3">Add Items</strong>
+                    </header>
+                    <form enctype="multipart/form-data" method="POST">
+                        {% csrf_token %}
+                        <div class="form-row ml-2">
+                            <div class="col form-group">
+                                {{ form.as_p}}
+                                <input type="submit" value="Add Product">
+                            </div> <!-- form-group end.// -->
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<script>
+    const dashbord = document.getElementById("dashbord");
+    const profile = document.getElementById("profile");
+    const item = document.getElementById("item");
+    function fordashbord() {
+        dashbord.style.display = 'block';
+        profile.style.display = 'none';
+        item.style.display = 'none';
+    }
+    function forprofile() {
+        dashbord.style.display = 'none';
+        profile.style.display = 'block';
+        item.style.display = 'none';
+
+    }
+    function foritem() {
+        dashbord.style.display = 'none';
+        profile.style.display = 'none';
+        item.style.display = 'block';
+
+    }
+</script>
+
+{% endblock %}
